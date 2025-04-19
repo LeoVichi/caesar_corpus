@@ -55,13 +55,13 @@ sudo apt install libfreetype6-dev libpng-dev
 No terminal, dentro da pasta do projeto:
 
 ```bash
-python3 corpus_final.py
+python3 corpus.py
 ```
 
 ### Para remover stopwords e termos irrelevantes:
 
 ```bash
-python3 corpus_final.py --no-stopwords
+python3 corpus.py --no-stopwords
 ```
 
 ---
