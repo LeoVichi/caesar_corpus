@@ -6,6 +6,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 from wordcloud import WordCloud
+import os
+
+# Caminho do diretório atual do script
+DIRETORIO_ATUAL = os.path.dirname(os.path.abspath(__file__))
+
+# Criar diretório de saída se não existir
+DIRETORIO_OUTPUT = os.path.join(DIRETORIO_ATUAL, "output")
+os.makedirs(DIRETORIO_OUTPUT, exist_ok=True)
+
 
 # CLI: Argumentos
 parser = argparse.ArgumentParser(description="Gera n-grams e visualizações para corpus latino")
@@ -70,7 +79,7 @@ if args.no_stopwords:
 # Exporta POS
 sufixo = "_sem_stopwords" if args.no_stopwords else "_com_stopwords"
 df_pos = pd.DataFrame(tokens_filtrados, columns=["Token", "Lema", "POS"])
-df_pos.to_csv(f"corpus_lema_pos{sufixo}.csv", index=False)
+df_pos.to_csv(os.path.join(DIRETORIO_OUTPUT, f"corpus_lema_pos{sufixo}.csv"), index=False)
 print(f"📄 Exportado: corpus_lema_pos{sufixo}.csv")
 
 # n-grams
@@ -88,8 +97,8 @@ cont_trigramas = Counter(trigramas)
 
 df_bi = pd.DataFrame(cont_bigramas.items(), columns=["Bigrama", "Frequência"])
 df_tri = pd.DataFrame(cont_trigramas.items(), columns=["Trigrama", "Frequência"])
-df_bi.to_csv(f"bigrama{sufixo}.csv", index=False)
-df_tri.to_csv(f"trigrama{sufixo}.csv", index=False)
+df_bi.to_csv(os.path.join(DIRETORIO_OUTPUT, f"bigrama{sufixo}.csv"), index=False)
+df_tri.to_csv(os.path.join(DIRETORIO_OUTPUT, f"trigrama{sufixo}.csv"), index=False)
 print(f"📦 Exportado: bigrama{sufixo}.csv e trigrama{sufixo}.csv")
 
 # Gráfico Bigramas
@@ -100,7 +109,7 @@ plt.xlabel("Frequência")
 plt.title("Top 30 Bigrama" + (" (sem stopwords)" if args.no_stopwords else " (com stopwords)"))
 plt.gca().invert_yaxis()
 plt.tight_layout()
-plt.savefig(f"grafico_top30_bigrama{sufixo}.png")
+plt.savefig(os.path.join(DIRETORIO_OUTPUT, f"grafico_top30_bigrama{sufixo}.png"))
 plt.show()
 print(f"📦 Exportado: grafico_top30_bigrama{sufixo}.png")
 
@@ -112,7 +121,7 @@ plt.xlabel("Frequência")
 plt.title("Top 30 Trigrama" + (" (sem stopwords)" if args.no_stopwords else " (com stopwords)"))
 plt.gca().invert_yaxis()
 plt.tight_layout()
-plt.savefig(f"grafico_top30_trigrama{sufixo}.png")
+plt.savefig(os.path.join(DIRETORIO_OUTPUT, f"grafico_top30_trigrama{sufixo}.png"))
 plt.show()
 print(f"📦 Exportado: grafico_top30_trigrama{sufixo}.png")
 
@@ -125,6 +134,6 @@ plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis("off")
 plt.title("Nuvem de Palavras" + (" (sem stopwords)" if args.no_stopwords else " (com stopwords)"))
 plt.tight_layout()
-plt.savefig(f"nuvem_palavras{sufixo}.png")
+plt.savefig(os.path.join(DIRETORIO_OUTPUT, f"nuvem_palavras{sufixo}.png"))
 plt.show()
 print(f"📦 Exportado: nuvem_palavras{sufixo}.png")
